@@ -10,8 +10,16 @@ unsigned long long ackermann(unsigned int m, unsigned int n) {
 }
 
 int main() {
-    unsigned int m = 3, n = 4;
+    unsigned int m, n;
+
+    printf("Enter value of m: ");
+    scanf("%u", &m);
+
+    printf("Enter value of n: ");
+    scanf("%u", &n);
+
     printf("Ackermann(%u, %u) = %llu\n", m, n, ackermann(m, n));
+
     return 0;
 }
 
