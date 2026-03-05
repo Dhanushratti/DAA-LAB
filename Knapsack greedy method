@@ -1,0 +1,55 @@
+#include <stdio.h>
+struct Item
+{
+    int value;
+    int weight;
+    float ratio;
+};
+
+int main()
+{
+    int n, capacity, i, j;
+    struct Item item[50], temp;
+    float totalValue = 0;
+
+    printf("Enter number of items: ");
+    scanf("%d", &n);
+    for(i = 0; i < n; i++)
+    {
+        printf("Enter value and weight of item %d: ", i + 1);
+        scanf("%d %d", &item[i].value, &item[i].weight);
+        item[i].ratio = (float)item[i].value / item[i].weight;
+    }
+
+    printf("Enter knapsack capacity: ");
+    scanf("%d", &capacity);
+    for(i = 0; i < n - 1; i++)
+    {
+        for(j = i + 1; j < n; j++)
+        {
+            if(item[i].ratio < item[j].ratio)
+            {
+                temp = item[i];
+                item[i] = item[j];
+                item[j] = temp;
+            }
+        }
+    }
+    for(i = 0; i < n; i++)
+    {
+        if(item[i].weight <= capacity)
+        {
+            totalValue = totalValue + item[i].value;
+            capacity = capacity - item[i].weight;
+        }
+        else
+        {
+            totalValue = totalValue + item[i].value * ((float)capacity / item[i].weight);
+            break;
+        }
+    }
+
+    printf("Maximum value in knapsack = %.2f\n", totalValue);
+
+    return 0;
+}
