@@ -1,0 +1,38 @@
+import heapq
+
+def prims_algorithm(graph, start_node):
+    mst = []
+    visited = set()
+    pq = [(0, start_node, None)]
+    total_cost = 0
+
+    while pq:
+        weight, current_node, parent = heapq.heappop(pq)
+
+        if current_node not in visited:
+            visited.add(current_node)
+            total_cost += weight
+            if parent is not None:
+                mst.append((parent, current_node, weight))
+
+            for neighbor, edge_weight in graph.get(current_node, []):
+                if neighbor not in visited:
+                    heapq.heappush(pq, (edge_weight, neighbor, current_node))
+    return mst, total_cost
+graph = {}
+print("--- Prim's Algorithm Input ---")
+num_edges = int(input("Enter the number of edges: "))
+print("Enter each edge in the format: Node1 Node2 Weight (e.g., A B 5)")
+for _ in range(num_edges):
+    u, v, w = input().split()
+    w = int(w)
+    if u not in graph: graph[u] = []
+    if v not in graph: graph[v] = []
+    graph[u].append((v, w))
+    graph[v].append((u, w))
+start_node = input("Enter the starting node: ")
+mst_edges, total_cost = prims_algorithm(graph, start_node)
+print("\n--- Minimum Spanning Tree ---")
+for u, v, weight in mst_edges:
+    print(f"{u} --({weight})-- {v}")
+print(f"Total MST Weight: {total_cost}")
