@@ -1,0 +1,52 @@
+#include <stdio.h>
+#include <limits.h>
+#include <stdbool.h>
+#define MAX 10
+void dijkstra(int graph[MAX][MAX], int n, int startNode) {
+    int distance[MAX], visited[MAX];
+    int count, minDist, nextNode, i, j;
+    for (i = 0; i < n; i++) {
+        distance[i] = graph[startNode][i];
+        visited[i] = 0;
+    }
+    distance[startNode] = 0;
+    visited[startNode] = 1;
+    count = 1;
+    while (count < n - 1) {
+        minDist = INT_MAX;
+        for (i = 0; i < n; i++) {
+            if (distance[i] < minDist && !visited[i]) {
+                minDist = distance[i];
+                nextNode = i;
+            }
+        }
+        visited[nextNode] = 1;
+        for (i = 0; i < n; i++) {
+            if (!visited[i]) {
+                if (minDist + graph[nextNode][i] < distance[i]) {
+                    distance[i] = minDist + graph[nextNode][i];
+                }
+            }
+        }
+        count++;
+    }
+    printf("\nShortest distances from node %d:\n", startNode);
+    for (i = 0; i < n; i++) {
+        printf("To node %d: %d\n", i, distance[i]);
+    }
+}
+int main() {
+    int graph[MAX][MAX], i, j, n, start;
+    printf("Enter number of vertices: ");
+    scanf("%d", &n);
+    printf("Enter the adjacency matrix (use 999 for infinity):\n");
+    for (i = 0; i < n; i++) {
+        for (j = 0; j < n; j++) {
+            scanf("%d", &graph[i][j]);
+        }
+    }
+    printf("Enter the starting node: ");
+    scanf("%d", &start);
+    dijkstra(graph, n, start);
+    return 0;
+}
