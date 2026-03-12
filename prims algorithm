@@ -1,20 +1,16 @@
 import heapq
-
 def prims_algorithm(graph, start_node):
     mst = []
     visited = set()
     pq = [(0, start_node, None)]
     total_cost = 0
-
     while pq:
         weight, current_node, parent = heapq.heappop(pq)
-
         if current_node not in visited:
             visited.add(current_node)
             total_cost += weight
             if parent is not None:
                 mst.append((parent, current_node, weight))
-
             for neighbor, edge_weight in graph.get(current_node, []):
                 if neighbor not in visited:
                     heapq.heappush(pq, (edge_weight, neighbor, current_node))
